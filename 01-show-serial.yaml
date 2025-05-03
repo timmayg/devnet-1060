@@ -1,0 +1,15 @@
+---
+- name: Gather and Show the Hostname and Serial Number of the IOS XE Boxes
+  hosts: iosxe
+  gather_facts: false
+  connection: network_cli
+
+  tasks:
+    - name: Get the facts
+      cisco.ios.ios_facts:
+        gather_subset: all
+
+    - name: Display model and serial number
+      ansible.builtin.debug:
+        msg: "Switch Host Name is {{ ansible_net_hostname }}.
+              Serial number is {{ ansible_net_serialnum }}."

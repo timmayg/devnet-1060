@@ -1,0 +1,39 @@
+---
+- name: Shutdown Cat 9k Switch LEDs (CLI lines version)
+  hosts: iosxe
+#  connection: netconf
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: Shutdown Cat 9k Interface LEDs
+      cisco.ios.ios_config:
+        commands: "hw-module switch 1 auto-off led"
+      register: led_output
+
+    - name: Shutdown Unused SFP Electronics
+      cisco.ios.ios_config:
+        commands: "hw-module switch 1 auto-off optics"
+      register: led_output
+
+    - name: Timmay HARD STOP this Playbook
+      ansible.builtin.meta: end_play
+
+
+
+    - name: Shutdown Cat 9k Interface LEDs
+      netconf_config:
+        xml: |
+            <config xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+              <native xmlns="http://cisco.com/ns/yang/Cisco-IOS-XE-native">
+                <hw-module>
+                  <switch>
+                    <switch-number>1</switch-number>
+                    <auto-off>
+                      <led/>
+                    </auto-off>
+                  </switch>
+                </hw-module>
+              </native>
+            </config>
+
