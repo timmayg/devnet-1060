@@ -3,6 +3,9 @@
   hosts: iosxe
   gather_facts: false
   connection: network_cli
+  vars:
+    ansible_username: "(( cl_user ))"
+    ansible_password: "{{ cl_pass }}" 
 
   tasks:
     - name: Get the facts
